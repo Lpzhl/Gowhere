@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atguigu.mapper.RoomTypesMapper">
+
+    <resultMap id="BaseResultMap" type="com.atguigu.pojo.RoomTypes">
+            <id property="roomTypeId" column="room_type_id" jdbcType="INTEGER"/>
+            <result property="description" column="description" jdbcType="VARCHAR"/>
+            <result property="originalprice" column="originalPrice" jdbcType="DECIMAL"/>
+            <result property="availableRooms" column="available_rooms" jdbcType="INTEGER"/>
+            <result property="name" column="name" jdbcType="VARCHAR"/>
+            <result property="bedtype" column="bedType" jdbcType="VARCHAR"/>
+            <result property="breakfast" column="breakfast" jdbcType="VARCHAR"/>
+            <result property="discountprice" column="discountPrice" jdbcType="DECIMAL"/>
+            <result property="version" column="version" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        room_type_id,description,originalPrice,
+        available_rooms,name,bedType,
+        breakfast,discountPrice,version
+    </sql>
+
+    <select id="selectById1" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM room_types
+        WHERE room_type_id = #{roomTypeId}
+    </select>
+</mapper>

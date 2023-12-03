@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atguigu.mapper.HotelImagesMapper">
+
+    <resultMap id="BaseResultMap" type="com.atguigu.pojo.HotelImages">
+            <id property="imageId" column="image_id" jdbcType="INTEGER"/>
+            <result property="hotelId" column="hotel_id" jdbcType="INTEGER"/>
+            <result property="roomTypeId" column="room_type_id" jdbcType="INTEGER"/>
+            <result property="imageUrl" column="image_url" jdbcType="VARCHAR"/>
+            <result property="description" column="description" jdbcType="VARCHAR"/>
+            <result property="imageType" column="image_type" jdbcType="OTHER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        image_id,hotel_id,room_type_id,
+        image_url,description,image_type
+    </sql>
+</mapper>
