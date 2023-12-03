@@ -23,7 +23,6 @@ public class JwtHelper {
         System.out.println("tokenExpiration = " + tokenExpiration);
         System.out.println("tokenSignKey = " + tokenSignKey);
         String token = Jwts.builder()
-
                 .setSubject("YYGH-USER")
                 .setExpiration(new Date(System.currentTimeMillis() + tokenExpiration*1000*60)) //单位分钟
                 .claim("userId", userId)

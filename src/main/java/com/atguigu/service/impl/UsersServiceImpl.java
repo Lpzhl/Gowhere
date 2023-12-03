@@ -58,7 +58,7 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users>
     public Result registerUser(Users user) {
         System.out.println("user = " + user);
         // 将用户插入到数据库
-        int rowsAffected = baseMapper.insert(user); // 假设您有一个扩展BaseMapper<Users>的映射器接口
+        int rowsAffected = baseMapper.insert(user);
 
         if (rowsAffected > 0) {
             // 注册成功

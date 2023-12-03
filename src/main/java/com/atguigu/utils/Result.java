@@ -12,7 +12,7 @@ public class Result<T> {
     private T data;
     public Result(){}
     // 返回数据
-    protected static <T> Result<T> build(T data) {
+    public static <T> Result<T> build(T data) {
         Result<T> result = new Result<T>();
         if (data != null)
             result.setData(data);
