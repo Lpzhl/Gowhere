@@ -17,5 +17,4 @@ public interface HotelsService extends IService<Hotels> {
 
     List<HotelVO> getHotelsByHotelId(int hotelId);
 
-
 }

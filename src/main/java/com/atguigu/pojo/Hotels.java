@@ -14,6 +14,7 @@ import lombok.Data;
 @TableName(value ="hotels")
 @Data
 public class Hotels implements Serializable {
+    @TableId
     private Integer hotelId;
 
     private String name;

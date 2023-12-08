@@ -18,6 +18,29 @@ public class HotelBookController {
     @Autowired
     private BookingsService bookingsService;
 
+    /**
+     * 删除订单
+     */
+
+    /**
+     * 获取指定用户的订单信息
+     *
+     */
+    @GetMapping("/getUserOrders")
+    public Result getUserOrders(@RequestParam int userId){
+        System.out.println("userId = " + userId);
+        List<Bookings> bookings =  bookingsService.getUserOrders(userId);
+        System.out.println("bookings = " + bookings);
+        return Result.ok(bookings);
+    }
+
+    @GetMapping("/getOrderInfo")
+    public Result getBooking(@RequestParam int bookingId){
+        System.out.println("bookingId = " + bookingId);
+        Result result = bookingsService.getOrderInfo(bookingId);
+        System.out.println("result = " + result);
+        return result;
+    }
 
     /**
      * 处理前端发送的生成订单请求
@@ -30,7 +53,6 @@ public class HotelBookController {
      *
      *
      */
-
     @PostMapping("/book")
     public Result bookHotel(@RequestBody Bookings booking) {
         System.out.println("booking = " + booking);
@@ -39,4 +61,22 @@ public class HotelBookController {
         return result;
     }
 
+
+
+
+    /**
+     * 新增一个处理过期处理过期订单的
+     */
+    @PostMapping("/handleExpiredBooking")
+    public Result handleExpiredBooking(@RequestParam int bookingId) {
+        return bookingsService.handleExpiredBooking(bookingId);
+    }
+
+    /**
+     * 处理取消订单
+     */
+    @PostMapping("handleOffBooking")
+    public Result handleOffBooking(@RequestParam int bookingId){
+        return bookingsService.handleOffBooking(bookingId);
+    }
 }

@@ -1,6 +1,7 @@
 package com.atguigu.mapper;
 
 import com.atguigu.pojo.RoomTypes;
+
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -10,7 +11,7 @@ import org.apache.ibatis.annotations.Mapper;
 * @createDate 2023-11-26 14:54:11
 * @Entity com.atguigu.pojo.RoomTypes
 */
-
+@Mapper
 public interface RoomTypesMapper extends BaseMapper<RoomTypes> {
 
 

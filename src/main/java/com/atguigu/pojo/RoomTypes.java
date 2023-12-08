@@ -15,6 +15,7 @@ import lombok.Data;
 @TableName(value ="room_types")
 @Data
 public class RoomTypes implements Serializable {
+    @TableId(value = "room_type_id")
     private Integer roomTypeId;
 
     private String description;

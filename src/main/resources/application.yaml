@@ -14,18 +14,43 @@ spring:
       password: '123456'
       driver-class-name: com.mysql.cj.jdbc.Driver
 
+redis:
+  host: 127.0.0.1 #Redis服务器地址
+  port: 6379 #Redis端口号
+  timeout: 300 # 连接超时时间（毫秒）
+  database: 0 # Redis数据库索引（默认为0）
+  password: 123456 # Redis 服务器密码，默认为空。生产中，一定要设置 Redis 密码！
+  jedis:
+    pool:
+      max-active: 8 # 连接池最大连接数，默认为 8 。使用负数表示没有限制。
+      max-idle: 8 # 默认连接数最大空闲的连接数，默认为 8 。使用负数表示没有限制。
+      min-idle: 0 # 默认连接池最小空闲的连接数，默认为 0 。允许设置 0 和 正数。
+      max-wait: -1 # 连接池最大阻塞等待时间，单位：毫秒。默认为 -1 ，表示不限制。
 
 # mybatis-plus的配置
 mybatis-plus:
   global-config:
     db-config:
       id-type: auto #主键策略自增长
+  mapper-locations: classpath*:com/atguigu/mapper/xml/*.xml
 
 #jwt配置
 jwt:
   token:
-    tokenExpiration: 120 #有效时间,单位分钟
+    tokenExpiration: 1440 #有效时间,单位分钟
     tokenSignKey: where123456  #当前程序签名秘钥 自定义
+
+#沙箱支付
+alipay:
+  appId: 9021000132655785
+  appPrivateKey: MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCWtCny9/aaalt08w2LAXqLOEtysjJCW6yqfzErmkUPaCD5tj6sjiVz4/oyR9jPW35MUgNzj0iL/8hr0KaVx7o24X6BOtKfSj76jkx6t4Vagt6MOvoKN4RJL9ul6hsrAiszcHtQTJeq+2TaRO/DOsRsnqN8XT3k3YVSksdR3RKRPbZ6oKqk0/XARcutP5z8sHhB63heDX1cPjMfpB6gjhpB7ILZTXD9vo86LT6suIHup85bzLhE+5/2ZP/ADVz/YjGNAVYMfjTgOfeTeA7FrL3LOt0mHXfZFGy6fvJTD5lA9yBts9//TA5Pxbf0XnET7pXJsTRG88DZe1ZpkpViGZqhAgMBAAECggEAdi8V0q/42YHc9SsCjOd89Z8RNAJg/b8s+oxCwEH8NKfhbFMqdWIIJwk7FaFYeszyj+GlSUOtjfTqdPqtGTsHYrCV57x8nmS4XP+pJHe1gZSt+GTr34VIHakFZOjho2nQ/UcRvZhDPNhnb/Ct4nm8vr3t0cLBnjDGtEndO+rV+8WonfKOapdbGNZpvgT1oXYa/q1ujbWhCynPOSedIp0EdENMfEgjUHXpYqfbzcOC4WEJY5MTw5dqXg6tbtZS2Gi7kaibXi6f4gfsDevET79TZQBcMAMPnInFaUefuP1Rl8ROw4nSY5mFdGwWwMCRgz/UlHlRa2+t/QIyrGyWcM95kQKBgQDJr8e2tdgJwZ5GzDTfcVfS1R5mZ2WbcZYORXjHjI/YbuWnwFxsysSYOzsT3blwmTMfauBPj6V0hQDZVccltQSBfC2taW3MOqOuVXUrhMqMRX5nAGsFIuE8PH4ImANoWUB861deAqS/k5Wcm61gJjotlUEHRbR5/Y5vxXs0Zaf+3QKBgQC/SaOCdHoO2dyopUvGQ5X9grcoUAtf8povaD53QmfZgVbRS/5xOdRGLnQsvjvO4y5ycEBOyy/+y61YBgwWxUt9/pXb5dW3jEyhligOE+lipg8uNuAZ4c1OxYk0NDYA/f/B8GjICHWDDl4BkgbVSV5vchvbgvAPte8k3GP+I/0UlQKBgQDED6Ioxrt+OH9Bua/IaumCJfVIfUk0BAZoVzajXcxUDPIp0gDHLZJRnnq+xDNJ91PQPdhS34RrMgRyQkW3LTJ1IZ9RzYSUHYkSpzahGJTCKahIPwrKUm78XJ30groFTYY4KZuj4xP+vFybgmbXajHyL/6oMCXS1R8LHsG3XP8j7QKBgQCdkepHzuywiRP0M908X3YRUvjPE0iba7tIq+Uw1hm3mIxMcf4RhOJwQVnfdYDMxmT/TaobfdJ2X47WAH060KCEFA+cCTJINSD2xjsOhaZtZX8BwaBOkatOZPfFcfC+Vny0Y/XcOOOb5lzXjFNmpD5PLT73Tl+zgVmSEp2nvjt+FQKBgCO4rge4sm974gmgj9B1bRKykAyKlGBp4/F0451Ws4VqdJx9tXPRMcQvHLCg6avx7L22Wgowl2YmNjaLIXqudFMxqSosZgYUH+woGcn6B0yw5aAwEvYwwsrJqsUH7IiK6RibOhNk+3KEipmIGCNLZwlsZnu31dqXzM7Pz0VKWCKK
+  alipayPublicKey: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAn4O9b1NlKgon78gqpOHEd/8bwspDoZ3/WWLbdLLuJ1XZYzPk1v+smEFH1c1rzRmzxdPv0BHFz60C/zDk01yvbNzo+5nd2GZYO1WcS76fNlwX06NT3ypACSwljl8r0qZrk3L9UYRnWn1hxtvOToMKpiYgZ9eaSQztup9suBJcwd/K34SqBsI6gEFIaizTC4XnkhObglbXIo75K20LUkF8w73pY1cM+rhaEAzUTy98WzgUp0sH96467zD3QCzS3Nk4VzGLdXWa42N+jO0IEtNTHxV0/gsjX32dQcHqsUzuK2+FcmZXl4zwTspGGvbWs4Ot9ZDM9mF/2nWNxO3AMq9F6QIDAQAB
+  notifyUrl: http://nadhgm.natappfree.cc/alipay/notify
+
+
+
+
+
 
 
 

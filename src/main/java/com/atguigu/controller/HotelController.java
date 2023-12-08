@@ -20,6 +20,24 @@ public class HotelController {
     private HotelsService hotelService;
 
     /**
+     * 根据hotelId获取酒店信息
+     */
+
+    @GetMapping("/hotelId")
+    public Result getHotelInfo(@RequestParam int hotelId) {
+        System.out.println("hotelId = " + hotelId);
+        try {
+            List<HotelVO> hotelInfo = hotelService.getHotelsByHotelId(hotelId);
+            return Result.ok(hotelInfo);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Result.build(null,ResultCodeEnum.PASSWORD_ERROR);
+        }
+    }
+
+
+
+    /**
      * 酒店搜索
      * @param hotelDTO
      * @return
@@ -39,10 +57,10 @@ public class HotelController {
 
     @PostMapping("/update")
     public Result<List<HotelVO>> updateHotels(@RequestParam int hotelId){
-        System.out.println("hotelId = " + hotelId);
+        //System.out.println("hotelId = " + hotelId);
 
         List<HotelVO> hotels = hotelService.getHotelsByHotelId(hotelId);
-
+        System.out.println("通过id搜索hotels = " + hotels);
         return Result.ok(hotels);
     }
 

@@ -15,7 +15,9 @@ public enum ResultCodeEnum {
     VERIFICATION_CODE_MISMATCH(507, "验证码错误"),
     VERIFICATION_CODE_EXPIRED(508, "验证码已过期"),
     VERIFICATION_CODE_INVALID(509, "无效验证码"),
-    ACCOUNT_ALREADY_REGISTERED(510, "邮箱已经注册");
+    KUCHUNBUZHU(500, "库存不足"),
+    ACCOUNT_ALREADY_REGISTERED(510, "邮箱已经注册"),
+    UN_FIND_ORDER(500, "未找到订单");
 
     private Integer code;
     private String message;

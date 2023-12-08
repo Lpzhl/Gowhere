@@ -13,6 +13,7 @@ import lombok.Data;
 @TableName(value ="hotel_images")
 @Data
 public class HotelImages implements Serializable {
+    @TableId
     private Integer imageId;
 
     private Integer hotelId;

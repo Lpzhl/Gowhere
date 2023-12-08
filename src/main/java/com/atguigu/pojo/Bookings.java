@@ -15,11 +15,14 @@ import lombok.Data;
 @TableName(value ="bookings")
 @Data
 public class Bookings implements Serializable {
+    @TableId
     private Integer bookingId;
 
     private Integer userId;
 
     private Integer hotelId;
+
+    private String hotelName;
 
     private Integer roomTypeId;
 
@@ -31,6 +34,8 @@ public class Bookings implements Serializable {
 
     private Integer numberOfGuests;
 
+    private String imageUrl;        // 图片链接
+
     private BigDecimal totalPrice;
 
     private String bookingStatus;
@@ -38,6 +43,10 @@ public class Bookings implements Serializable {
     private String phoneNumber;
 
     private String identityCardNumber;
+
+    private Date paymentTime;
+
+    private String customerName;
 
     private static final long serialVersionUID = 1L;
 }

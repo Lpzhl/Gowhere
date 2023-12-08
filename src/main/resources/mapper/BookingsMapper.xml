@@ -10,6 +10,7 @@
             <result property="hotelId" column="hotel_id" jdbcType="INTEGER"/>
             <result property="roomTypeId" column="room_type_id" jdbcType="INTEGER"/>
             <result property="roomNumber" column="room_number" jdbcType="VARCHAR"/>
+            <result property="hotelName" column="hotel_name" jdbcType="VARCHAR"/>
             <result property="checkInDate" column="check_in_date" jdbcType="DATE"/>
             <result property="checkOutDate" column="check_out_date" jdbcType="DATE"/>
             <result property="numberOfGuests" column="number_of_guests" jdbcType="INTEGER"/>
@@ -17,13 +18,16 @@
             <result property="bookingStatus" column="booking_status" jdbcType="VARCHAR"/>
             <result property="phoneNumber" column="phone_number" jdbcType="VARCHAR"/>
             <result property="identityCardNumber" column="identity_card_number" jdbcType="VARCHAR"/>
+            <result property="paymentTime" column="payment_time" jdbcType="DATE"/>
+            <result property="customerName" column="customer_name" jdbcType="VARCHAR"/>
+            <result property="imageUrl" column="image_url" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         booking_id,user_id,hotel_id,
         room_type_id,room_number,check_in_date,
         check_out_date,number_of_guests,total_price,
-        booking_status,phone_number,identity_card_number
+        booking_status,phone_number,identity_card_number,payment_time,customer_name,hotel_name,mage_url
     </sql>
 
 
