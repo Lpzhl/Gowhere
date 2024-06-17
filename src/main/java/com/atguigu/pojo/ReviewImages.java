@@ -9,28 +9,19 @@ import java.util.Date;
 import lombok.Data;
 
 /**
- * @TableName users
+ * @TableName review_images
  */
-@TableName(value ="users")
+@TableName(value ="review_images")
 @Data
-public class Users implements Serializable {
-    private Integer id;
+public class ReviewImages implements Serializable {
+    @TableId
+    private Integer imageId;
 
-    private String nickname;
+    private Integer reviewId;
 
-    private String email;
+    private String imageUrl;
 
-    private String password;
-
-    private String avatar;
-
-    private Date registrationdate;
-
-    private Integer roleId;
-
-    private  Boolean isFrozen;
-
-    private Integer isMerchant;
+    private Date uploadedAt;
 
     private static final long serialVersionUID = 1L;
 }

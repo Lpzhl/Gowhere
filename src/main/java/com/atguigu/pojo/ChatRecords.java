@@ -9,28 +9,30 @@ import java.util.Date;
 import lombok.Data;
 
 /**
- * @TableName users
+ * @TableName chat_records
  */
-@TableName(value ="users")
+@TableName(value ="chat_records")
 @Data
-public class Users implements Serializable {
+public class ChatRecords implements Serializable {
     private Integer id;
 
-    private String nickname;
+    private Integer senderId;
 
-    private String email;
+    private Integer receiverId;
 
-    private String password;
+    private Integer hotelId;
 
-    private String avatar;
+    private Integer orderId;
 
-    private Date registrationdate;
+    private String messageContent;
 
-    private Integer roleId;
+    private Date timestamp;
 
-    private  Boolean isFrozen;
+    private Object status;
 
-    private Integer isMerchant;
+    private Object messageType;
+
+    private String name;
 
     private static final long serialVersionUID = 1L;
 }

@@ -9,28 +9,21 @@ import java.util.Date;
 import lombok.Data;
 
 /**
- * @TableName users
+ * @TableName airlines
  */
-@TableName(value ="users")
+@TableName(value ="airlines")
 @Data
-public class Users implements Serializable {
-    private Integer id;
+public class Airlines implements Serializable {
+    @TableId
+    private Integer airlineId;
 
-    private String nickname;
+    private String name;
 
-    private String email;
+    private String headquarters;
 
-    private String password;
+    private Date foundedDate;
 
-    private String avatar;
-
-    private Date registrationdate;
-
-    private Integer roleId;
-
-    private  Boolean isFrozen;
-
-    private Integer isMerchant;
+    private String photoUrl;
 
     private static final long serialVersionUID = 1L;
 }

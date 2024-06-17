@@ -48,5 +48,13 @@ public class Bookings implements Serializable {
 
     private String customerName;
 
+    private String typeName;
+
+    private String breakfast;
+
+    private String bedtype;
+
+    private BigDecimal Price;
+
     private static final long serialVersionUID = 1L;
 }

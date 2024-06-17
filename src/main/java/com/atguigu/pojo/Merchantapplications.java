@@ -5,32 +5,27 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
-import java.util.Date;
 import lombok.Data;
 
 /**
- * @TableName users
+ * @TableName merchantapplications
  */
-@TableName(value ="users")
+@TableName(value ="merchantapplications")
 @Data
-public class Users implements Serializable {
+public class Merchantapplications implements Serializable {
     private Integer id;
 
-    private String nickname;
+    private Integer applicantid;
 
-    private String email;
+    private String name;
 
-    private String password;
+    private String applicationimage;
 
-    private String avatar;
+    private String contactphone;
 
-    private Date registrationdate;
+    private String identitycardnumber;
 
-    private Integer roleId;
-
-    private  Boolean isFrozen;
-
-    private Integer isMerchant;
+    private String status;
 
     private static final long serialVersionUID = 1L;
 }

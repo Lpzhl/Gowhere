@@ -34,6 +34,10 @@ public class RoomTypes implements Serializable {
 
     private Integer version;
 
+    private Integer hotelId;
+
+    private String sku;
+
     private static final long serialVersionUID = 1L;
 
 

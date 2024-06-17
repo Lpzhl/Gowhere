@@ -37,5 +37,11 @@ public class Hotels implements Serializable {
 
     private BigDecimal price;
 
+    private Integer ownerId;
+
+    private Boolean merchantDisabled;
+
+    private Boolean adminDisabled;
+
     private static final long serialVersionUID = 1L;
 }

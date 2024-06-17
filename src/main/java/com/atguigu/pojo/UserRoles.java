@@ -5,32 +5,23 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
-import java.util.Date;
 import lombok.Data;
 
 /**
- * @TableName users
+ * @TableName user_roles
  */
-@TableName(value ="users")
+@TableName(value ="user_roles")
 @Data
-public class Users implements Serializable {
-    private Integer id;
-
-    private String nickname;
-
-    private String email;
-
-    private String password;
-
-    private String avatar;
-
-    private Date registrationdate;
+public class UserRoles implements Serializable {
+    @TableId
+    private Integer userId;
 
     private Integer roleId;
 
-    private  Boolean isFrozen;
-
-    private Integer isMerchant;
-
     private static final long serialVersionUID = 1L;
+
+    public UserRoles(int userId, int roleId) {
+        this.roleId = roleId;
+        this.userId = userId;
+    }
 }
