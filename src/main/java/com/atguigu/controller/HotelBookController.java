@@ -7,6 +7,7 @@ import com.atguigu.service.BookingsService;
 import com.atguigu.utils.Result;
 import com.atguigu.vo.HotelVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,9 +19,33 @@ public class HotelBookController {
     @Autowired
     private BookingsService bookingsService;
 
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
+
+
+
+    // 获取订单信息的接口
+    @GetMapping("/hhbookings")
+    public List<Bookings> getBookingsByUserAndHotel(@RequestParam Long userId, @RequestParam Long hotelId) {
+        return bookingsService.getBookingsByUserAndHotel(userId, hotelId);
+    }
+
     /**
-     * 删除订单
+     *更新订单的信息
+     *
      */
+    @PostMapping("/updateBooking")
+    public Result updateBooking(@RequestBody Bookings bookings){
+        System.out.println("bookings = " + bookings);
+        boolean b = bookingsService.updateBooking(bookings);
+        if(b){
+            return Result.ok("修改成功");
+        }
+        else{
+            return Result.build("修改失败");
+        }
+
+    }
 
     /**
      * 获取指定用户的订单信息
@@ -43,13 +68,6 @@ public class HotelBookController {
     }
 
     /**
-     * 处理前端发送的生成订单请求
-     * 首先查看该房间是否有剩余
-     *   1.如果有剩余则可以生成订单
-     *        把生成的订单信息返回给前端
-     *            这里会存在高并发和超脉的问题，所以我该怎么处理
-     *                    1.请你帮我解决这个问题
-     *   2.房间数量不够则不可以生成订单 返回库存不足给前端
      *
      *
      */
