@@ -77,8 +77,9 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users>
     @Override
     public Result getUserInfo(String token) {
         //是否过期
+        System.out.println("自动登录：token = " + token);
         boolean expiration = jwtHelper.isExpiration(token);
-
+        System.out.println("expiration = " + expiration);
         if(expiration){
             //失败 ，未登录
             return Result.build(null,ResultCodeEnum.NOTLOGIN);
@@ -110,6 +111,26 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users>
         }
     }
 
+    @Override
+    public boolean freezeUser(int userId) {
+        Users user = new Users();
+        user.setIsFrozen(true);  // 设置为冻结状态
+
+        int updateCount = userMapper.update(user, new QueryWrapper<Users>().eq("id", userId));
+        return updateCount > 0;  // 如果更新的记录数大于0，则表示操作成功
+    }
+
+
+    @Override
+    public boolean unfreezeUser(int userId) {
+        Users user = new Users();
+        user.setIsFrozen(false);  // 设置为非冻结状态
+
+        int updateCount = userMapper.update(user, new QueryWrapper<Users>().eq("id", userId));
+        return updateCount > 0;  // 如果更新的记录数大于0，则表示操作成功
+    }
+
+
 
     @Override
     public Result login(Users users) {
@@ -137,7 +158,7 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users>
                 data.put("token",token);
                 data.put("user",userInDatabase);
 
-                System.out.println("哈哈哈");
+                //System.out.println("哈哈哈");
                 return Result.ok(data);
                 // return Result.ok("登录成功");
             } else {

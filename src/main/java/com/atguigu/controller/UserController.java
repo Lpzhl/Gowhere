@@ -1,32 +1,116 @@
 package com.atguigu.controller;
 
 
+import com.atguigu.dao.RoleInfoDto;
+import com.atguigu.mapper.ContactPeopleMapper;
+import com.atguigu.mapper.PermissionsMapper;
+import com.atguigu.mapper.UsersMapper;
+import com.atguigu.pojo.ContactPeople;
+import com.atguigu.pojo.Permissions;
+import com.atguigu.pojo.RolePermissions;
 import com.atguigu.pojo.Users;
+import com.atguigu.service.PermissionsService;
+import com.atguigu.service.RolePermissionsService;
+import com.atguigu.service.UserManagerService;
 import com.atguigu.service.UsersService;
-import com.atguigu.utils.EmailVca;
-import com.atguigu.utils.MD5Util;
-import com.atguigu.utils.Result;
-import com.atguigu.utils.ResultCodeEnum;
+import com.atguigu.utils.*;
 import com.atguigu.vo.RegisterRequest;
 import com.atguigu.vo.ResetPasswordRequest;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.security.Permission;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("user")
 @CrossOrigin
+@Slf4j
 public class UserController {
 
     @Autowired
     private UsersService userService;
+
     @Autowired
     private EmailVca emailVca;
+
+
+    @Autowired
+    private ContactPeopleMapper contactPeopleMapper;
+
+    @Autowired
+    private PermissionsMapper permissionsMapper;
+
+    @Autowired
+    private AliOssUtil aliOssUtil;
+
+    @Autowired
+    private UsersMapper userMapper;
+    /**
+     * 修改个人信息
+     * @param file
+     * @return
+     */
+    @PutMapping("/upload/{userId}")
+    public Result<String> upload(@RequestParam("file") MultipartFile file, @PathVariable Long userId, @RequestParam("nickname") String nickname) {
+        log.info("文件上传：{}", file);
+
+        try {
+            // 原始文件名
+            String originalFilename = file.getOriginalFilename();
+            // 截取原始文件名的后缀
+            String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
+            // 构造新文件名称
+            String objectName = UUID.randomUUID().toString() + extension;
+
+            // 文件的请求路径
+            String filePath = aliOssUtil.upload(file.getBytes(), objectName);
+            // 更新用户信息
+            userMapper.updateUserProfile(userId, nickname, filePath);
+
+            return Result.ok(filePath);
+        } catch (IOException e) {
+            log.error("文件上传失败：{}", e);
+            return Result.build("上传失败");
+        }
+    }
+    /**
+     * 添加联系人
+     */
+    @PostMapping("/addContact")
+    public Result addContact(@RequestBody ContactPeople newContact, @RequestParam("userId") int userId) {
+        // 设置用户ID
+        newContact.setUserId(userId);
+        // 插入数据库
+        int insert = contactPeopleMapper.insert(newContact);
+        if(insert>0){
+            return Result.ok("添加成功");
+        }else{
+            return Result.build("插入失败");
+        }
+    }
+
+    /**
+     * 获取角色权限信息
+     */
+    @GetMapping("/permissions")
+    public Result getUserPermissions(@RequestParam int userId) {
+        System.out.println("userId = " + userId);
+        List<Permissions> permissions =permissionsMapper.findPermissionsByUserId(userId);
+        System.out.println("permissions = " + permissions);
+        return Result.ok(permissions) ;
+    }
+
 
     /**
      * 用于验证登录

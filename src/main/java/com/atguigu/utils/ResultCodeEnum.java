@@ -17,8 +17,8 @@ public enum ResultCodeEnum {
     VERIFICATION_CODE_INVALID(509, "无效验证码"),
     KUCHUNBUZHU(500, "库存不足"),
     ACCOUNT_ALREADY_REGISTERED(510, "邮箱已经注册"),
-    UN_FIND_ORDER(500, "未找到订单");
-
+    UN_FIND_ORDER(500, "未找到订单"),
+    SDOM_NUM(500,"座位不足");
     private Integer code;
     private String message;
 
@@ -34,4 +34,7 @@ public enum ResultCodeEnum {
     public String getMessage() {
         return message;
     }
+
+
+
 }

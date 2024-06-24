@@ -51,6 +51,46 @@ public class BookingsServiceImpl extends ServiceImpl<BookingsMapper, Bookings>
     @Autowired
     private PlatformTransactionManager transactionManager;
 
+    @Override
+    public List<Bookings> getBookingsByUserAndHotel(Long userId, Long hotelId) {
+        QueryWrapper<Bookings> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("user_id", userId).eq("hotel_id", hotelId);
+        return list(queryWrapper);
+    }
+
+    @Override
+    public List<Bookings> getAllBookings() {
+        QueryWrapper<Bookings> bookingsQueryWrapper = new QueryWrapper<>();
+        bookingsQueryWrapper.ne("booking_status", "已过期");
+
+        return bookingsMapper.selectList(bookingsQueryWrapper);
+    }
+
+
+    /**
+     * 更新订单信息
+     * @param bookings
+     * @return
+     */
+    @Override
+    public boolean updateBooking(Bookings bookings) {
+        if (Integer.parseInt(String.valueOf(bookings.getTotalPrice())) < 0) {
+            // 如果总价小于0，更新订单并设置为待评价状态
+            bookings.setBookingStatus("待评价");
+        } else {
+            // 如果总价大于等于0，更新订单并设置为待支付状态
+            bookings.setBookingStatus("待支付");
+            // 设置订单的过期时间（30分钟后）
+            long expireAt = System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(30);
+            stringRedisTemplate.opsForZSet().add("bookings", bookings.getBookingId().toString(), expireAt);
+
+            long remainingTime = expireAt - System.currentTimeMillis();
+        }
+
+        return this.updateById(bookings);
+    }
+
+
     /**
      * 获取指定用户的订单信息
      * @param
@@ -62,6 +102,16 @@ public class BookingsServiceImpl extends ServiceImpl<BookingsMapper, Bookings>
         queryWrapper.eq("user_id", userId);
         return list(queryWrapper);
     }
+
+    @Override
+    public List<Bookings> getBookingsByHotelId(int hotelId) {
+
+        QueryWrapper<Bookings> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("hotel_id", hotelId);
+        return bookingsMapper.selectList(queryWrapper);
+    }
+
+
 
     /**
      * 自动更新订单是否过期
@@ -78,8 +128,14 @@ public class BookingsServiceImpl extends ServiceImpl<BookingsMapper, Bookings>
 
             try {
                 // 查询并更新订单状态为“已过期”
-                Bookings bookings = new Bookings();
+
+                Bookings bookings = bookingsMapper.selectById(bookingId);
+                Integer roomTypeId = bookings.getRoomTypeId();
                 bookings.setBookingStatus("已过期");
+                RoomTypes roomTypes = roomTypesMapper.selectById(roomTypeId);
+
+                //还原数量
+                roomTypes.setAvailableRooms(Integer.valueOf(roomTypes.getAvailableRooms()+bookings.getRoomNumber()));
 
                 UpdateWrapper<Bookings> updateWrapper = new UpdateWrapper<>();
                 updateWrapper.eq("booking_id", bookingId);
@@ -108,7 +164,9 @@ public class BookingsServiceImpl extends ServiceImpl<BookingsMapper, Bookings>
     @Override
     @Transactional   //事务回滚
     public Result createBooking(Bookings booking) {
+        System.out.println("预定的booking = " + booking);
         RoomTypes roomType = roomTypesMapper.selectById(booking.getRoomTypeId());
+
         System.out.println("roomType：" + roomType.getAvailableRooms());
 
         if (roomType != null && (roomType.getAvailableRooms() - Integer.parseInt(booking.getRoomNumber())) >= 0) {
@@ -136,20 +194,14 @@ public class BookingsServiceImpl extends ServiceImpl<BookingsMapper, Bookings>
                     booking.setImageUrl(hotelImage.getImageUrl());
                 }
 
-                /**
-                 *  在这里补充 设置一个image_url
-                 *  根据booking.getHotelId() 去hotel_images表中随机获取第一张且image_type为cover的图片
-                 *  并且把获取到的url插入到 booking.setImageUrl();
-                 *
-                 */
 
                 bookingsMapper.insert(booking);
 
-                // 设置订单的过期时间（30分钟后）
+
                 long expireAt = System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(30);
                 stringRedisTemplate.opsForZSet().add("bookings", booking.getBookingId().toString(), expireAt);
 
-                // 计算剩余时间（毫秒）
+
                 long remainingTime = expireAt - System.currentTimeMillis();
 
                 // 创建包含订单信息和剩余时间的响应对象

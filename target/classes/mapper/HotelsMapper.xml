@@ -15,14 +15,17 @@
             <result property="availableRooms" column="available_rooms" jdbcType="INTEGER"/>
             <result property="transport" column="transport" jdbcType="VARCHAR"/>
             <result property="tag" column="tag" jdbcType="VARCHAR"/>
-           <result property="price" column="price" jdbcType="DECIMAL"/>
+            <result property="price" column="price" jdbcType="DECIMAL"/>
+            <result property="ownerId" column="owner_id" jdbcType="TINYINT"/>
+        <result property="merchantDisabled" column="merchant_disabled" jdbcType="TINYINT"/>
+        <result property="adminDisabled" column="admin_disabled" jdbcType="TINYINT"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         hotel_id,name,address,
         phone_number,description,rating,
         active,available_rooms,transport,
-        tag,price
+        tag,price,owner_id,merchant_disabled,admin_disabled
     </sql>
 
 

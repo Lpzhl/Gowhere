@@ -21,13 +21,17 @@
             <result property="paymentTime" column="payment_time" jdbcType="DATE"/>
             <result property="customerName" column="customer_name" jdbcType="VARCHAR"/>
             <result property="imageUrl" column="image_url" jdbcType="VARCHAR"/>
+            <result property="typeName" column="type_name" jdbcType="VARCHAR"/>
+            <result property="breakfast" column="breakfast" jdbcType="VARCHAR"/>
+            <result property="bedtype" column="bed_type" jdbcType="VARCHAR"/>
+            <result property="price" column="price" jdbcType="DECIMAL"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         booking_id,user_id,hotel_id,
         room_type_id,room_number,check_in_date,
         check_out_date,number_of_guests,total_price,
-        booking_status,phone_number,identity_card_number,payment_time,customer_name,hotel_name,mage_url
+        booking_status,phone_number,identity_card_number,payment_time,customer_name,hotel_name,mage_url,type_name,breakfast,bed_type,price
     </sql>
 
 

@@ -24,4 +24,7 @@ public interface UsersService extends IService<Users> {
 
     Result resetPassword(String email, String encryptedPassword);
 
+    boolean freezeUser(int userId);
+
+    boolean unfreezeUser(int userId);
 }

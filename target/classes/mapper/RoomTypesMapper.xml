@@ -14,12 +14,14 @@
             <result property="breakfast" column="breakfast" jdbcType="VARCHAR"/>
             <result property="discountprice" column="discountPrice" jdbcType="DECIMAL"/>
             <result property="version" column="version" jdbcType="INTEGER"/>
+            <result property="hotelId" column="hotel_id" jdbcType="INTEGER"/>
+             <result property="sku" column="sku" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         room_type_id,description,originalPrice,
         available_rooms,name,bedType,
-        breakfast,discountPrice,version
+        breakfast,discountPrice,version,hotel_id,sku
     </sql>
 
     <select id="selectById1" resultMap="BaseResultMap">
@@ -27,5 +29,9 @@
         <include refid="Base_Column_List"/>
         FROM room_types
         WHERE room_type_id = #{roomTypeId}
+    </select>
+
+    <select id="selectByHotelId1" resultType="com.atguigu.pojo.RoomTypes">
+        SELECT * FROM room_types WHERE hotel_id = #{hotelId}
     </select>
 </mapper>

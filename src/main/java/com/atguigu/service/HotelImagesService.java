@@ -10,4 +10,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 public interface HotelImagesService extends IService<HotelImages> {
 
+    boolean removeHotelImage(int imageId, int hotelId);
 }

@@ -11,10 +11,13 @@
             <result property="password" column="password" jdbcType="VARCHAR"/>
             <result property="avatar" column="avatar" jdbcType="VARCHAR"/>
             <result property="registrationdate" column="registrationDate" jdbcType="TIMESTAMP"/>
+            <result property="roleId" column="role_id" jdbcType="INTEGER"/>
+            <result property="isFrozen" column="is_frozen" jdbcType="TINYINT"/>
+            <result property="isMerchant" column="is_merchant" jdbcType="TINYINT"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,nickname,email,
-        password,avatar,registrationDate
+        id, nickname, email, password, avatar,
+        registrationDate, role_id, is_frozen,is_merchant
     </sql>
 </mapper>

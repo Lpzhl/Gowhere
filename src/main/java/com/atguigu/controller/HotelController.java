@@ -9,23 +9,20 @@ import com.atguigu.service.BookingsService;
 import com.atguigu.service.HotelImagesService;
 import com.atguigu.service.HotelsService;
 import com.atguigu.service.RoomTypesService;
+import com.atguigu.utils.AliOssUtil;
 import com.atguigu.utils.Result;
 import com.atguigu.utils.ResultCodeEnum;
-import com.atguigu.vo.HotelImageVO;
-import com.atguigu.vo.HotelVO;
-import com.atguigu.vo.HotelVO2;
-import com.atguigu.vo.RoomTypeVO;
+import com.atguigu.vo.*;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -51,10 +48,27 @@ public class HotelController {
     @Autowired
     private BookingsService bookingsService;
 
+    @Autowired
+    private AliOssUtil aliOssUtil;
 
   /*  private String uploadDirectory = "D:/xuniResoure/"; // 指定图片上传的目录*/
     private final String uploadDirectory = "C:\\Users\\LoveF\\Desktop/xuniResoure/"; // 指定图片上传的目录
 
+    /**
+     * 前十的热门酒店
+     *
+     */
+    @GetMapping("/getHotelsByHot")
+    public Result getHotelsByHot(){
+        List<HotelsVO> hotels = hotelService.getHotelsByHot();
+        return Result.ok(hotels);
+    }
+
+    /**
+     * 根据酒店id获取酒店信息
+     * @param hotelId
+     * @return
+     */
     @GetMapping("/getHotelNameById")
     public Result getHotelNameById (@RequestParam int hotelId){
         String hotelNameById = hotelService.getHotelNameById(hotelId);
@@ -121,8 +135,6 @@ public class HotelController {
 
             QueryWrapper<RoomTypes> roomQueryWrapper = new QueryWrapper<>();
             roomQueryWrapper.eq("hotel_id", hotelId);
-
-
             List<RoomTypes> roomTypesList = roomTypesMapper.selectList(roomQueryWrapper);
             System.out.println("roomTypesList = " + roomTypesList);
 
@@ -183,11 +195,24 @@ public class HotelController {
     public Result addRoomType(@RequestBody RoomTypes roomType) {
         System.out.println("roomType = " + roomType);
         try {
+            // 生成唯一的4位数SKU
+            String uniqueSku = generateUniqueSku();
+            roomType.setSku(uniqueSku);
+
             roomTypesService.addRoomType(roomType);
             return Result.ok("房间类型添加成功");
         } catch (Exception e) {
+            e.printStackTrace();
             return Result.build("添加失败");
         }
+    }
+    private String generateUniqueSku() {
+        Random random = new Random();
+        String sku;
+        boolean exists;
+        // 生成随机4位数
+        sku = String.format("RT%04d", random.nextInt(10000));
+        return sku;
     }
 
     /***
@@ -221,7 +246,61 @@ public class HotelController {
             return Result.build("图片删除失败");
         }
     }
+    @PostMapping("/uploadRoom")
+    public Result uploadRoomImages(@RequestParam("file") MultipartFile file,
+                                   @RequestParam("roomType_id") int roomTypeId) {
 
+        if (file.isEmpty()) {
+            return Result.build("文件为空");
+        }
+
+        try {
+            String originalFilename = file.getOriginalFilename();
+            String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
+            String objectName = UUID.randomUUID().toString() + extension;
+
+            String fileUrl = aliOssUtil.upload(file.getBytes(), objectName);
+
+            HotelImages hotelImages = new HotelImages();
+            hotelImages.setRoomTypeId(roomTypeId);
+            hotelImages.setImageUrl(fileUrl);
+
+            hotelImagesService.save(hotelImages);
+
+            return Result.ok(fileUrl);
+        } catch (IOException e) {
+            return Result.build("文件上传失败");
+        }
+    }
+
+    @PostMapping("/upload")
+    public Result uploadReviewImages(@RequestParam("file") MultipartFile file,
+                                     @RequestParam("hotel_id") int hotelId) {
+
+        if (file.isEmpty()) {
+            return Result.build("文件为空");
+        }
+
+        try {
+            String originalFilename = file.getOriginalFilename();
+            String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
+            String objectName = UUID.randomUUID().toString() + extension;
+
+            String fileUrl = aliOssUtil.upload(file.getBytes(), objectName);
+
+            HotelImages hotelImages = new HotelImages();
+            hotelImages.setHotelId(hotelId);
+            hotelImages.setImageUrl(fileUrl);
+
+            hotelImagesService.save(hotelImages);
+
+            return Result.ok(fileUrl);
+        } catch (IOException e) {
+            return Result.build("文件上传失败");
+        }
+    }
+
+/*
     @PostMapping("/uploadRoom")
     public Result uploadRoomImages(@RequestParam("file") MultipartFile file,
                                      @RequestParam("roomType_id") int roomTypeId)  throws IOException {
@@ -259,13 +338,15 @@ public class HotelController {
         }
     }
 
-    /**
+    */
+/**
      * 上传酒店照片
      * @param file
      * @param hotelId
      * @return
      * @throws IOException
-     */
+     *//*
+
     @PostMapping("/upload")
     public Result uploadReviewImages(@RequestParam("file") MultipartFile file,
                                      @RequestParam("hotel_id") int hotelId)  throws IOException {
@@ -302,6 +383,7 @@ public class HotelController {
             return Result.build("文件上传失败");
         }
     }
+*/
 
 
     /**

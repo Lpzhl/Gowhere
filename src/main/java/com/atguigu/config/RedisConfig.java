@@ -15,6 +15,7 @@ public class RedisConfig {
 
     @Bean
     public RedisTemplate<String,  List<FlightsVO>> redisTemplate(RedisConnectionFactory connectionFactory) {
+        System.out.println("RedisConfig.redisTemplate()");
         RedisTemplate<String, List<FlightsVO>> template = new RedisTemplate<>();
         template.setConnectionFactory(connectionFactory);
 

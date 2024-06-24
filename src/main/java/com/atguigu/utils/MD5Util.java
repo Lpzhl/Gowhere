@@ -7,6 +7,7 @@ import java.security.NoSuchAlgorithmException;
 
 @Component
 public final class MD5Util {
+
     public static String encrypt(String strSrc) {
         try {
             char hexChars[] = { '0', '1', '2', '3', '4', '5', '6', '7', '8',
@@ -29,4 +30,5 @@ public final class MD5Util {
             throw new RuntimeException("MD5加密出错！！+" + e);
         }
     }
+
 }

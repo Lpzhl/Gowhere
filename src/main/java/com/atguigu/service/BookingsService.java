@@ -24,4 +24,13 @@ public interface BookingsService extends IService<Bookings> {
     Result handleOffBooking (int bookingId);
 
     List<Bookings> getUserOrders(int userId);
+
+    List<Bookings> getBookingsByHotelId(int hotelId);
+
+    boolean updateBooking(Bookings bookings);
+
+    List<Bookings> getBookingsByUserAndHotel(Long userId, Long hotelId);
+
+    List<Bookings> getAllBookings();
+
 }
